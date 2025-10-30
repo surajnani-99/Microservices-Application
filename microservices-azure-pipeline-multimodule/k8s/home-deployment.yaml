@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-service
+  template:
+    metadata:
+      labels:
+        app: home-service
+    spec:
+      containers:
+      - name: home-service
+        image: <ACR_LOGIN_SERVER>/home-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: APPLICATIONINSIGHTS_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              name: appinsights-secret
+              key: connectionString
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: home-service
+spec:
+  selector:
+    app: home-service
+  ports:
+  - port: 80
+    targetPort: 8080

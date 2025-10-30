@@ -1,0 +1,55 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ACR_NAME: '<your-acr-name>'
+  ACR_LOGIN_SERVER: '<your-acr-name>.azurecr.io'
+  IMAGE_TAG: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  jobs:
+  - job: MavenBuild
+    steps:
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        goals: 'clean package -DskipTests'
+
+- stage: DockerBuildPush
+  dependsOn: Build
+  jobs:
+  - job: PushImages
+    steps:
+    - task: Docker@2
+      displayName: 'Login to ACR'
+      inputs:
+        command: login
+        containerRegistry: '$(ACR_NAME)'
+    - script: |
+        for service in home-service application-service cart-service; do
+          docker build -t $(ACR_LOGIN_SERVER)/$service:$(IMAGE_TAG) $service
+          docker push $(ACR_LOGIN_SERVER)/$service:$(IMAGE_TAG)
+        done
+      displayName: 'Build & Push Docker Images'
+
+- stage: Deploy
+  dependsOn: DockerBuildPush
+  jobs:
+  - job: DeployAKS
+    steps:
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Azure Resource Manager'
+        azureSubscriptionEndpoint: '<azure-subscription>'
+        azureResourceGroup: '<aks-resource-group>'
+        kubernetesCluster: '<aks-cluster-name>'
+        command: apply
+        useConfigurationFile: true
+        configuration: |
+          k8s/home-deployment.yaml
+          k8s/application-deployment.yaml
+          k8s/cart-deployment.yaml
