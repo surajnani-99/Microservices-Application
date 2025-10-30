@@ -1,1 +1,3 @@
 com/azure/demo/homeservice/HomeServiceApplication.class
+com/azure/demo/homeservice/HomeController.class
+com/azure/demo/homeservice/HomeController$Product.class
