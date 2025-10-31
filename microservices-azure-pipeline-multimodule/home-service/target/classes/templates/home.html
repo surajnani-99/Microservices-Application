@@ -1,36 +1,124 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Home Service</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        body { background-color: #f8f9fa; }
-        .header { background-color: #ffcc00; padding: 20px; text-align: center; }
-        .card { margin: 10px; transition: transform 0.2s; }
-        .card:hover { transform: scale(1.05); }
-        .btn-primary { background-color: #ff6600; border: none; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Home - Blinkit Style</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f7f8fa;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #ffe033;
+      color: #1a1a1a;
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 1200px;
+    }
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin: 20px;
+      width: 250px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card h3 {
+      margin: 15px 0 10px;
+      color: #333;
+    }
+    .card p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+    .btn {
+      background-color: #00c853;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: background-color 0.3s ease;
+    }
+    .btn:hover {
+      background-color: #009624;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #f1f1f1;
+      color: #555;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-<div class="header">
-    <h1>Welcome to Home Service</h1>
-</div>
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-3" th:each="product : ${products}">
-            <div class="card">
-                <img th:src="${product.image}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${product.name}"></h5>
-                    <p class="card-text" th:text="'Price: $' + ${product.price}"></p>
-                    <a href="#" class="btn btn-primary">Add to Cart</a>
-                </div>
-            </div>
-        </div>
+  <header>
+    🛒 Welcome to QuickCart
+  </header>
+
+  <div class="content">
+    <div class="card">
+      <img src="/images/fruits.jpg" alt="Fruits">
+      <h3>Fresh Fruits</h3>
+      <p>Delivered in 10 minutes! Get your daily dose of vitamins.</p>
+      <button class="btn" onclick="goToCart()">Add to Cart</button>
     </div>
-</div>
+
+    <div class="card">
+      <img src="/images/snacks.jpg" alt="Snacks">
+      <h3>Snacks & Beverages</h3>
+      <p>Crunchy treats and cool drinks — all at your doorstep!</p>
+      <button class="btn" onclick="goToCart()">Add to Cart</button>
+    </div>
+
+    <div class="card">
+      <img src="/images/veggies.jpg" alt="Vegetables">
+      <h3>Fresh Vegetables</h3>
+      <p>Farm-fresh greens ready for your kitchen!</p>
+      <button class="btn" onclick="goToCart()">Add to Cart</button>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 QuickCart | Powered by Suraj
+  </footer>
+
+  <script>
+    function goToCart() {
+      // Redirect to Cart Service (adjust port if needed)
+      window.location.href = "http://98.70.246.91:8081/cart";
+    }
+  </script>
 
 </body>
 </html>
